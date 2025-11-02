@@ -9,7 +9,7 @@ public class Rarity {
         this.description = description;
     }
     
-    public int getId() {
+    public int getLevel() {
         return level;
     }
 
