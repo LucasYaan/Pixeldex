@@ -22,6 +22,20 @@ public class Pixel {
         this.evolution = evolution;
     }
 
+    Pixel(int id, String name, int power, String rarity) {
+        this.id = id;
+        this.name = name;
+        this.power = power;
+        this.rarity = RarityTable.getRarityByDescription(rarity);
+    }
+
+    Pixel(int id, String name, int power, int rarity) {
+        this.id = id;
+        this.name = name;
+        this.power = power;
+        this.rarity = RarityTable.getRarityByLevel(rarity);
+    }
+
     public int getId() {
         return id;
     }
