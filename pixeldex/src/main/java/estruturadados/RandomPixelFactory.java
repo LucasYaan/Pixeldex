@@ -1,5 +1,7 @@
 package estruturadados;
 
+import java.util.Random;
+
 public class RandomPixelFactory {
     private RandomList nameListPrefix;
     private RandomList nameListMiddle;
@@ -35,13 +37,12 @@ public class RandomPixelFactory {
         this.rarityList = new RandomList(rarities);
     }
 
-    public Pixel createRandomPixel(int id) {
-        String name = nameListPrefix.getRandomItem() +
-                      nameListMiddle.getRandomItem() +
-                      nameListSuffix.getRandomItem();
-        int power = (int) (Math.random() * 100) + 1; // Power between 1 and 100
-        String rarityDesc = rarityList.getRandomItem();
-        Rarity rarity = RarityTable.getRarityByDescription(rarityDesc);
+    public Pixel createRandomPixel() {
+        int id = new Random().nextInt(1000);
+        String name = nameListPrefix.getRandomItem() + nameListMiddle.getRandomItem() + nameListSuffix.getRandomItem();
+        String rarityDescription = rarityList.getRandomItem();
+        Rarity rarity = RarityTable.getRarityByDescription(rarityDescription);
+        int power = Math.toIntExact(Math.round(rarity.getLevel() * Math.random() * 100));
         return new Pixel(id, name, power, rarity);
     }
 }

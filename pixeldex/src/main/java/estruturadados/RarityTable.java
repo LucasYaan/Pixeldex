@@ -1,6 +1,6 @@
 package estruturadados;
 
-public class RarityTable {
+public abstract class RarityTable {
     static Rarity[] rarities = {
         new Rarity(1, "Comum"),
         new Rarity(2, "Incomum"),

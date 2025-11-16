@@ -5,7 +5,7 @@ public class Pixel {
     private String name;
     private int power;
     private Rarity rarity;
-    private Pixel evolution;
+
 
     Pixel(int id, String name, int power, Rarity rarity) {
         this.id = id;
@@ -14,13 +14,7 @@ public class Pixel {
         this.rarity = rarity;
     }
 
-    Pixel(int id, String name, int power, Rarity rarity, Pixel evolution) {
-        this.id = id;
-        this.name = name;
-        this.power = power;
-        this.rarity = rarity;
-        this.evolution = evolution;
-    }
+
 
     Pixel(int id, String name, int power, String rarity) {
         this.id = id;
@@ -50,10 +44,6 @@ public class Pixel {
 
     public Rarity getRarity() {
         return rarity;
-    }
-
-    public Pixel getEvolution() {
-        return evolution;
     }
 
 }
