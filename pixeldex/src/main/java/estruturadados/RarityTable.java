@@ -1,5 +1,7 @@
 package estruturadados;
 
+import estruturadados.structures.Rarity;
+
 public abstract class RarityTable {
     static Rarity[] rarities = {
         new Rarity(1, "Comum"),

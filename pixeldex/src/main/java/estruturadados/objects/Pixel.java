@@ -1,4 +1,7 @@
-package estruturadados;
+package estruturadados.objects;
+
+import estruturadados.RarityTable;
+import estruturadados.structures.Rarity;
 
 public class Pixel {
     private int id;
@@ -7,7 +10,7 @@ public class Pixel {
     private Rarity rarity;
 
 
-    Pixel(int id, String name, int power, Rarity rarity) {
+    public Pixel(int id, String name, int power, Rarity rarity) {
         this.id = id;
         this.name = name;
         this.power = power;

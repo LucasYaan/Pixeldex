@@ -1,4 +1,4 @@
-package estruturadados;
+package estruturadados.structures;
 
 public class LinkedList<T> {
     public Node head;

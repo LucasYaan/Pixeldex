@@ -2,6 +2,10 @@ package estruturadados;
 
 import java.util.Random;
 
+import estruturadados.objects.Pixel;
+import estruturadados.structures.RandomList;
+import estruturadados.structures.Rarity;
+
 public class RandomPixelFactory {
     private RandomList nameListPrefix;
     private RandomList nameListMiddle;

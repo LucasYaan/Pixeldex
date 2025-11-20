@@ -1,4 +1,4 @@
-package estruturadados;
+package estruturadados.structures;
 
 public class RandomList {
     private String[] items;
