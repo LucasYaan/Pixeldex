@@ -51,7 +51,7 @@ public class Pixel {
 
     @Override
     public String toString() {
-        return "Pixel{" +
+        return "{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", power=" + power +

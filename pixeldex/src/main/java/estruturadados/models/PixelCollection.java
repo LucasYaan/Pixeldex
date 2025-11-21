@@ -2,6 +2,7 @@ package estruturadados.models;
 
 import estruturadados.objects.Pixel;
 import estruturadados.structures.LinkedList;
+import estruturadados.structures.LinkedList.Node;
 
 public class PixelCollection {
     private LinkedList<Pixel> pixels;
@@ -43,5 +44,15 @@ public class PixelCollection {
 
     public int getSize() {
         return size;
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        LinkedList<Pixel>.Node currentPixel = pixels.getHead(); 
+        while (currentPixel != null) {
+            sb.append(currentPixel.getValue().toString()).append("\n");
+            currentPixel = currentPixel.getNext();
+        }
+        return sb.toString();
     }
 }

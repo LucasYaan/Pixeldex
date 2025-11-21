@@ -3,11 +3,7 @@ package estruturadados.io;
 import java.util.Scanner;
 
 public class InputReader {
-    private Scanner scanner;
-
-    public InputReader() {
-        this.scanner = new Scanner(System.in);
-    }
+    private static Scanner scanner = new Scanner(System.in);
 
     public String readLine() {
         try {
@@ -29,6 +25,15 @@ public class InputReader {
         } catch (Exception e) {
             System.out.println("Error reading input: " + e.getMessage());
             return ' ';
+        }
+    }
+
+    public int readInt() {
+        try {
+            return Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            System.out.println("Error reading input: " + e.getMessage());
+            return -1;
         }
     }
 }
