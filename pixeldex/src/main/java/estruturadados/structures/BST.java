@@ -7,8 +7,9 @@ public class BST {
         this.root = null;
     }
 
-    public class BSTNode {
+    public class BSTNode<T> {
       int value;
+      T data;
       BSTNode left;
       BSTNode right;
 

@@ -2,7 +2,6 @@ package estruturadados.models;
 
 import estruturadados.objects.Pixel;
 import estruturadados.structures.LinkedList;
-import estruturadados.structures.LinkedList.Node;
 
 public class PixelCollection {
     private LinkedList<Pixel> pixels;

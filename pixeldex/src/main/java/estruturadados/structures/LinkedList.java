@@ -23,18 +23,18 @@ public class LinkedList<T> {
         size++;
     }
     
-    public void addAt(int index, T value) {
+    public boolean addAt(int index, T value) {
         Node newNode = new Node(value);
         if (index == 0) {
             newNode.setNext(head);
             head = newNode;
             if (tail == null) tail = newNode;
-            return;
+            return true;
         }
 
         Node current = head;
         for (int i = 0; i < index - 1; i++) {
-            if (current == null) return;
+            if (current == null) return false;
             current = current.getNext();
         }
 
@@ -44,6 +44,7 @@ public class LinkedList<T> {
             if (newNode.getNext() == null) tail = newNode;
         }
         size++;
+        return true;
     }
 
     public void addFirst(T value) {
