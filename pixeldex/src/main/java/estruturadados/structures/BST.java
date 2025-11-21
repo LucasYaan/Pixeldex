@@ -1,104 +1,93 @@
 package estruturadados.structures;
 
-public class BST<T> {
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+public class BST<K, V> {
     private BSTNode root;
+    private Comparator<K> comparator;
+    private class BSTNode {
+        K key;
+        V value;
+        BSTNode left, right;
 
-    public BST() {
-        this.root = null;
+        BSTNode(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
     }
 
-    public class BSTNode<K, V> {
-      private int value;
-      private T data;
-      private BSTNode left;
-      private BSTNode right;
-
-
-      public BSTNode(int value) {
-          this.value = value;
-          this.data = null;
-          this.left = null;
-          this.right = null;
-      }
+    public BST(Comparator<K> comparator) {
+        this.comparator = comparator;
     }
 
-    
     // INSERT
-    public void insert(int value) {
-      root = insertRec(root, value);
+    public void insert(K key, V value) {
+        root = insertRec(root, key, value);
     }
+    private BSTNode insertRec(BSTNode current, K key, V value) {
+        if (current == null) return new BSTNode(key, value);
 
-    private BSTNode insertRec(BSTNode current, int value) {
-      if (current == null) {
-          return new BSTNode(value);
-      }
-      if (value < current.value) {
-        current.left = insertRec(current.left, value);
-      }
-      else if (value > current.value) {
-        current.right = insertRec(current.right, value);
-      }
-
-      return current;
+        if (comparator.compare(key, current.key) < 0) {
+            current.left = insertRec(current.left, key, value);
+        } else {
+            current.right = insertRec(current.right, key, value);
+        }
+        return current;
     }
 
     // SEARCH
-    public boolean search(int key) {
-      return searchRec(root, key);
+    public V search(K key) {
+        BSTNode node = searchRec(root, key);
+        return node != null ? node.value : null;
     }
+    private BSTNode searchRec(BSTNode current, K key) {
+        if (current == null) return null;
 
-    private boolean searchRec(BSTNode current, int value) {
-      if (current == null) return false;
-      if (value == current.value) return true;
-      return value < current.value
-        ? searchRec(current.left, value)
-        : searchRec(current.right, value);
+        int cmp = comparator.compare(key, current.key);
+        if (cmp == 0) return current;
+        return cmp < 0
+          ? searchRec(current.left, key)
+          : searchRec(current.right, key);
     }
 
     // REMOVE
-    public void remove(int key) {
+    public void remove(K key) {
       root = removeRec(root, key);
     } 
-
-    private BSTNode removeRec(BSTNode current, int value) {
+    private BSTNode removeRec(BSTNode current, K key) {
       // 1. Encontrando o nó
-      if (current == null) {
-        return null;
-      }
-      if (value < current.value) {
-        current.left = removeRec(current.left, value);
-      }
-      else if (value > current.value) {
-        current.right = removeRec(current.right, value);
-      }
+      if (current == null) return null;
+
+      int cmp = comparator.compare(key, current.key);
+
+      if (cmp < 0) current.left = removeRec(current.left, key);
+      else if (cmp > 0) current.right = removeRec(current.right, key);
 
       // 2. Removendo o nó
       else {
           // caso 1: nó folha (sem filhos)
-          if (current.left == null && current.right == null) {
-              return null;
-          }
+          if (current.left == null && current.right == null) return null;
 
           // caso 2: um único filho
           if (current.left == null) return current.right;
           if (current.right == null) return current.left;
 
           // caso 3: dois filhos
-          int menorValor = minValue(current.right);
-          current.value = menorValor;
-          current.right = removeRec(current.right, menorValor);
+          BSTNode temp = minValue(current.right);
+          current.key = temp.key;
+          current.value = temp.value;
+          current.right = removeRec(current.right, temp.key);
       }
 
       return current;
     }
-
-    private int minValue(BSTNode node) {
-        int min = node.value;
+    private BSTNode minValue(BSTNode node) {
         while (node.left != null) {
-            min = node.left.value;
             node = node.left;
         }
-        return min;
+        return node;
     }
 
     // INORDER TRAVERSAL
@@ -112,6 +101,7 @@ public class BST<T> {
         inOrderRec(node.right);
       }
     }
+
     // PREORFDER TRAVERSAL
     public void preOrder() {
       preOrderRec(root);
@@ -123,6 +113,7 @@ public class BST<T> {
         preOrderRec(node.right);
       }
     }
+    
     // POSTORDER TRAVERSAL
     public void postOrder() {
       postOrderRec(root);
@@ -135,13 +126,12 @@ public class BST<T> {
       }
     }
 
+    // MÉTRICAS DA ÁRVORE
     public int height() {
       return heightRec(root);
     }
     private int heightRec(BSTNode node) {
-      if (node == null) {
-        return -1; // altura de uma árvore vazia é -1
-      }
+      if (node == null) return -1; // altura de uma árvore vazia é -1
       int leftHeight = heightRec(node.left);
       int rightHeight = heightRec(node.right);
       return Math.max(leftHeight, rightHeight) + 1;
@@ -151,9 +141,45 @@ public class BST<T> {
       return countNodesRec(root);
     }
     private int countNodesRec(BSTNode node) {
-      if (node == null) {
-        return 0;
-      }
+      if (node == null) return 0;
       return 1 + countNodesRec(node.left) + countNodesRec(node.right);
     }
-}
+
+    public int countLeaves() {
+      return countLeavesRec(root);
+    }
+    private int countLeavesRec(BSTNode node) {
+      if (node == null) return 0;
+      if (node.left == null && node.right == null) return 1;
+      return countLeavesRec(node.left) + countLeavesRec(node.right);
+    }
+
+    public boolean isBST() {
+      return isBSTRec(root, null, null);
+      }
+    private boolean isBSTRec(BSTNode node, K min, K max) {
+      if (node == null) return true;
+      if (min != null && comparator.compare(node.key, min) <= 0) return false;
+      if (max != null && comparator.compare(node.key, max) >= 0) return false;
+
+      return isBSTRec(node.left, min, node.key) && isBSTRec(node.right, node.key, max);
+    }
+    
+    public List<V> range(K min, K max) {
+      List<V> result = new ArrayList<>();
+      rangeRec(root, min, max, result);
+      return result;
+    }
+    private void rangeRec(BSTNode node, K min, K max, List<V> result) {
+      if (node == null) return;
+
+      if (comparator.compare(min, node.key) < 0)
+        rangeRec(node.left, min, max, result);
+
+      if (comparator.compare(min, node.key) <= 0 && comparator.compare(max, node.key) >= 0)
+        result.add(node.value);
+
+      if (comparator.compare(max, node.key) > 0)
+        rangeRec(node.right, min, max, result);
+    }
+  }

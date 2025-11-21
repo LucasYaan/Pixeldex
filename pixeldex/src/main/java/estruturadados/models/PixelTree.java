@@ -2,7 +2,7 @@ package estruturadados.models;
 
 import estruturadados.structures.BST;
 
-public class PixelTree {
+public class PixelTree { // ?
     private BST pixels;
     
     public PixelTree() {
