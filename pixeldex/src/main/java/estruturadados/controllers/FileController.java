@@ -28,10 +28,15 @@ public class FileController {
 
     public void saveCollection(String data) {
         // Implementar parsing de PixelCollection para String
+
         try {
             fileWriter.writeLine(data);
         } catch (Exception e) {
             System.out.println("Error saving collection to file: " + e.getMessage());
         }
+    }
+
+    public void loadCollection() {
+        return; // Implementar leitura e parsing de arquivo para PixelCollection
     }
 }

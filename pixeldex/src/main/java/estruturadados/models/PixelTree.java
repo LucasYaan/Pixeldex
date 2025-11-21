@@ -15,5 +15,5 @@ public class PixelTree {
 
     public void insertPixelId(int id) {
         this.pixels.insert(id);
-    }    
+    }
 }
