@@ -6,6 +6,19 @@ public class BST {
     public BST() {
         this.root = null;
     }
+
+    public class BSTNode {
+      int value;
+      BSTNode left;
+      BSTNode right;
+
+      public BSTNode(int value) {
+          this.value = value;
+          this.left = null;
+          this.right = null;
+      }
+    }
+
     
     // INSERT
     public void insert(int value) {
@@ -140,4 +153,4 @@ public class BST {
       }
       return 1 + countNodesRec(node.left) + countNodesRec(node.right);
     }
-  }
+}

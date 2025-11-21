@@ -49,4 +49,14 @@ public class Pixel {
         return rarity;
     }
 
+    @Override
+    public String toString() {
+        return "Pixel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", power=" + power +
+                ", rarity=" + rarity.getDescription() +
+                '}';
+    }
+
 }
