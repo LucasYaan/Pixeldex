@@ -1,19 +1,22 @@
 package estruturadados.structures;
 
-public class BST {
+public class BST<T> {
     private BSTNode root;
 
     public BST() {
         this.root = null;
     }
 
-    public class BSTNode {
-      int value;
-      BSTNode left;
-      BSTNode right;
+    public class BSTNode<K, V> {
+      private int value;
+      private T data;
+      private BSTNode left;
+      private BSTNode right;
+
 
       public BSTNode(int value) {
           this.value = value;
+          this.data = null;
           this.left = null;
           this.right = null;
       }
