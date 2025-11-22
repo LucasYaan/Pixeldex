@@ -35,7 +35,9 @@ public class RandomPixelFactory {
             { "tron", "ton", "ssauro", "zorde", "borg", "max",
               "byte", "dax", "mon", "trix", "lorde", "dor",
               "garg", "bellum", "vund", "sen", "phon", "ion",
-              "rex", "roth", "zilla", "gorn", "nael", ""};
+              "rex", "roth", "zilla", "gorn", "nael", "",
+              "zard", "dron", "rium", "nix", "thar", "star",
+              "phite", "qual", "plox", "buul"};
         String[] rarities = RarityTable.getRarityDescriptions();
 
         this.nameListPrefix = new RandomList(namePrefixes);
@@ -46,7 +48,7 @@ public class RandomPixelFactory {
 
     public Pixel createRandomPixel() {
         int id = new Random().nextInt(1000);
-        if (id == 999) return new Pixel(id, "Traue", 9999999, new Rarity(99, "Traue"));
+        if (id == 999) return new Pixel(id, "Traue", 9999999, new Rarity(99, "Traue")); // Oi Traue, essa é pra você
         String name = nameListPrefix.getRandomItem() + nameListMiddle.getRandomItem() + nameListSuffix.getRandomItem();
         String rarityDescription = rarityList.getRandomItem();
         Rarity rarity = RarityTable.getRarityByDescription(rarityDescription);
