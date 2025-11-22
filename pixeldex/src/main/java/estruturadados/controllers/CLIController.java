@@ -93,7 +93,7 @@ public class CLIController {
         Pixel p = new Pixel(id, nome, poder, raridade);
 
         collection.addPixel(p);
-        tree.insertPixelId(p.getId());
+        tree.addPixel(p);
 
         menu.showSuccess("Pixel" + nome + "adicionado. ");
     }
@@ -107,7 +107,7 @@ public class CLIController {
             int id = Integer.parseInt(termo);
 
             Pixel dummy = new Pixel(id, "", 0, new Rarity(1, "COMUM"));
-            Pixel found = tree.search(dummy);
+            Pixel found = tree.findPixel(dummy);
 
             if (found != null) {
                 menu.printLine("Encontrado no Índice (BST):");
@@ -142,14 +142,14 @@ public class CLIController {
 
         if (p != null) {
             collection.getPixels().removeAt(index); // Remove da lista por índice
-            tree.remove(p); // Remove da árvore pelo objeto
+            tree.removePixel(p); // Remove da árvore pelo objeto
             menu.showSuccess("Pixel removido da posição " + index);
         } else {
             menu.showError("Índice inválido ou lista vazia.");
         }
     }
 
-    }
+    
 
     private void handleRemoveIndex(String[] parts) {
         if (parts.length < 2)
@@ -161,7 +161,7 @@ public class CLIController {
 
         if (target != null) {
             collection.removePixel(target);
-            tree.remove(target);
+            tree.removePixel(target);
             menu.showSuccess("Pixel ID " + id + " removido.");
         } else {
             menu.showError("ID " + id + " não encontrado.");
@@ -212,7 +212,7 @@ public class CLIController {
                 novaLista.add(p);
             } else {
                 countRemoved++;
-                tree.remove(p); // Remove duplicata da árvore
+                tree.removePixel(p); // Remove duplicata da árvore
             }
             current = current.getNext();
         }
@@ -307,7 +307,7 @@ public class CLIController {
 
     private Rarity criarRaridade(String text) {
         int nivel;
-        switch (text) {
+        switch (text) { // Usar RarityTable para mapear texto para nível
             case "COMUM":
                 nivel = 1;
                 break;
