@@ -1,5 +1,8 @@
 package estruturadados.structures;
 
+import java.util.ArrayList;
+
+
 public class LinkedList<T> {
     private Node head;
     private Node tail;
@@ -103,6 +106,97 @@ public class LinkedList<T> {
     public void removeLast() {
         removeAt(size - 1);
     }
+
+    public boolean move(int node, int position) {
+        if (node < 0 || node >= size || position < 0 || position >= size || node == position) {
+            return false;
+        }
+
+        Node current = head;
+        T valueToMove = null;
+
+        for (int i = 0; i < size; i++) {
+            if (i == node) {
+                valueToMove = current.getValue();
+                break;
+            }
+            current = current.getNext();
+        }
+
+        if (valueToMove != null) {
+            removeAt(node);
+            addAt(position, valueToMove);
+            return true;
+        }
+
+        return false;
+    }
+
+    public void reverse() {
+        Node prev = null;
+        Node current = head;
+        tail = head;
+
+        while (current != null) {
+            Node nextNode = current.getNext();
+            current.setNext(prev);
+            prev = current;
+            current = nextNode;
+        }
+        head = prev;
+    }
+
+    public LinkedList<T> unique() {
+        LinkedList<T> uniqueList = new LinkedList<>();
+        Node current = head;
+        ArrayList<T> seenValues = new ArrayList<T>(size);
+
+        while (current != null) {
+            T currentValue = current.getValue();
+            boolean isDuplicate = false;
+
+            for (T seenValue : seenValues) {
+                if (currentValue.equals(seenValue)) {
+                    isDuplicate = true;
+                    break;
+                }
+            }
+
+            if (!isDuplicate) {
+                uniqueList.add(currentValue);
+                seenValues.add(currentValue);
+            }
+
+            current = current.getNext();
+        }
+            
+        return uniqueList;
+    }
+
+    public LinkedList<T> slice(int start, int end) { // Slice inclusivo no início e no fim
+        LinkedList<T> slicedList = new LinkedList<>();
+        if (start < 0 || end > size || start >= end) return slicedList;
+
+        Node current = head;
+        for (int i = 0; i <= end; i++) {
+            if (i >= start) {
+                slicedList.add(current.getValue());
+            }
+            current = current.getNext();
+        }
+        return slicedList;
+    }
+
+    public T get(int index) {
+        if (index < 0 || index >= size) return null;
+
+        Node current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.getNext();
+        }
+        return current.getValue();
+    }
+
 
     public boolean isEmpty() {
         return head == null;
