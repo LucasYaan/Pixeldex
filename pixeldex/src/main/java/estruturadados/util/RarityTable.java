@@ -1,4 +1,4 @@
-package estruturadados;
+package estruturadados.util;
 
 import estruturadados.structures.Rarity;
 
@@ -7,8 +7,8 @@ public abstract class RarityTable {
         new Rarity(1, "Comum"),
         new Rarity(2, "Incomum"),
         new Rarity(3, "Raro"),
-        new Rarity(4, "Épico"),
-        new Rarity(5, "Lendário")
+        new Rarity(4, "Epico"),
+        new Rarity(5, "Lendario")
     };
 
     public static Rarity getRarityByLevel(int level) {

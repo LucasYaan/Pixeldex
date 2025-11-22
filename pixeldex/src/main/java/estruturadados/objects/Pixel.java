@@ -1,7 +1,7 @@
 package estruturadados.objects;
 
-import estruturadados.RarityTable;
 import estruturadados.structures.Rarity;
+import estruturadados.util.RarityTable;
 
 public class Pixel {
     private int id;

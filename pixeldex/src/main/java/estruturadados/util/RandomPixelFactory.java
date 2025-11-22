@@ -1,4 +1,4 @@
-package estruturadados;
+package estruturadados.util;
 
 import java.util.Random;
 
@@ -15,7 +15,7 @@ public class RandomPixelFactory {
     public RandomPixelFactory() {
         String[] namePrefixes = {"ba", "be", "bi", "bo", "bu",
                                  "da", "de", "di", "do", "du",
-                                 "ka", "ke", "ki", "ko", 
+                                 "ka", "ke", "ki", "ko", "",
                                  "la", "le", "li", "lo", "lu",
                                  "ma", "me", "mi", "mo", "mu",
                                  "ra", "re", "ri", "ro", "ru",
@@ -24,7 +24,7 @@ public class RandomPixelFactory {
                                  "za", "ze", "zi", "zo", "zu"};
         String[] nameMiddles = {"ba", "be", "bi", "bo", "bu",
                                  "da", "de", "di", "do", "du",
-                                 "ka", "ke", "ki", "ko", 
+                                 "ka", "ke", "ki", "ko", "",
                                  "la", "le", "li", "lo", "lu",
                                  "ma", "me", "mi", "mo", "mu",
                                  "ra", "re", "ri", "ro", "ru",
@@ -32,7 +32,10 @@ public class RandomPixelFactory {
                                  "ta", "te", "ti", "to", "tu",
                                  "za", "ze", "zi", "zo", "zu"};
         String[] nameSuffixes =
-            { "tron", "ton", "ssauro", "zorde", "borg", "max", "byte", "dax", "mon", "trix", "lorde", "dor", "garg", "bellum", "vund"};
+            { "tron", "ton", "ssauro", "zorde", "borg", "max",
+              "byte", "dax", "mon", "trix", "lorde", "dor",
+              "garg", "bellum", "vund", "sen", "phon", "ion",
+              "rex", "roth", "zilla", "gorn", "nael", ""};
         String[] rarities = RarityTable.getRarityDescriptions();
 
         this.nameListPrefix = new RandomList(namePrefixes);
@@ -43,10 +46,11 @@ public class RandomPixelFactory {
 
     public Pixel createRandomPixel() {
         int id = new Random().nextInt(1000);
+        if (id == 999) return new Pixel(id, "Traue", 9999999, new Rarity(99, "Traue"));
         String name = nameListPrefix.getRandomItem() + nameListMiddle.getRandomItem() + nameListSuffix.getRandomItem();
         String rarityDescription = rarityList.getRandomItem();
         Rarity rarity = RarityTable.getRarityByDescription(rarityDescription);
-        int power = Math.toIntExact(Math.round(rarity.getLevel() * Math.random() * 100));
+        int power = Math.toIntExact(Math.round((Math.random() + rarity.getLevel()) * 100));
         return new Pixel(id, name, power, rarity);
     }
 }

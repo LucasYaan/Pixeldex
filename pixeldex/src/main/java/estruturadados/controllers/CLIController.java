@@ -9,6 +9,8 @@ import estruturadados.models.PixelCollection;
 import estruturadados.models.PixelTree;
 import estruturadados.objects.Pixel;
 import estruturadados.structures.Rarity;
+import estruturadados.util.RandomPixelFactory;
+import estruturadados.util.RarityTable;
 import estruturadados.structures.LinkedList;
 
 public class CLIController {
@@ -18,6 +20,8 @@ public class CLIController {
     private InputReader input;
     private Menu menu;
 
+    private RandomPixelFactory pixelFactory;
+
     private boolean run;
 
     public CLIController() {
@@ -26,6 +30,8 @@ public class CLIController {
 
         this.input = new InputReader();
         this.menu = new Menu();
+
+        this.pixelFactory = new RandomPixelFactory();
 
         this.run = true;
 
@@ -56,6 +62,7 @@ public class CLIController {
                     case "LIST" -> handleList();
                     case "LIST-INDEX" -> handleListIndex(parts);
                     case "RANGE" -> handleRange(parts);
+                    case "GENERATE" -> handleGenerate(parts);
                     case "HELP" -> menu.showHelp();
                     case "EXIT" -> {
                         run = false;
@@ -80,14 +87,14 @@ public class CLIController {
 
         int id = Integer.parseInt(parts[1]);
         String nome = parts[2];
-        int poder = Integer.parseInt(parts[3]);
-        String raridadeText = parts[4].toUpperCase();
+        String raridadeText = parts[3].toUpperCase();
+        int poder = Integer.parseInt(parts[4]);
 
         Rarity raridade;
         try {
             raridade = criarRaridade(raridadeText);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Raridade inválida. Use: COMUM, RARO, EPICO, LENDARIO");
+            throw new IllegalArgumentException("Raridade inválida. Use: COMUM, INCOMUM, RARO, EPICO, LENDARIO");
         }
 
         Pixel p = new Pixel(id, nome, poder, raridade);
@@ -95,7 +102,7 @@ public class CLIController {
         collection.addPixel(p);
         tree.addPixel(p);
 
-        menu.showSuccess("Pixel" + nome + "adicionado. ");
+        menu.showSuccess("Pixel adicionado: " + p.toString());
     }
 
     private void handleFind(String[] parts) {
@@ -131,6 +138,22 @@ public class CLIController {
             if (!found)
                 menu.showError("Nenhum pixel com nome '" + termo + "' encontrado.");
         }
+    }
+
+    private void handleGenerate(String[] parts) {
+        if (parts.length < 2){      
+            handleGenerate("GENERATE 1".split("\\s+"));
+            return;
+        }
+        int quantidade = Integer.parseInt(parts[1]);
+
+        for (int i = 0; i < quantidade; i++) {
+            Pixel p = pixelFactory.createRandomPixel();
+            collection.addPixel(p);
+            tree.addPixel(p);
+            menu.showSuccess("Gerado: " + p.toString());
+        }
+        menu.showSuccess(quantidade + " pixels gerados e adicionados.");
     }
 
     private void handleRemoveCollection(String[] parts) {
@@ -274,6 +297,8 @@ public class CLIController {
 
     }
 
+    
+
     private void handleList() {
         menu.printLine("=== COLEÇÃO (LISTA) ===");
         if (collection.getSize() == 0) {
@@ -297,37 +322,40 @@ public class CLIController {
             case "POST" -> tree.printPostOrder();
             default -> menu.showError("Modo inválido.");
         }
-
+        menu.skipLine();
     }
 
     private void handleRange(String[] parts) {
-        // Pixeltree
+        // Tá tudo fudido, mas de novo, a paciência já foi faz tempo
+        // Idealmente esse e o slice deveriam estar nas estruturas correspondentes
+        // Na verdade essa porra tinha que ficar na árvore, O(n) disso aqui deve ser horroroso
+        if (parts.length < 3)
+            throw new IllegalArgumentException("Uso: RANGE <id_min> <id_max>");
+        int idMin = Integer.parseInt(parts[1]);
+        int idMax = Integer.parseInt(parts[2]);
 
+        menu.printLine("=== RANGE [" + idMin + " - " + idMax + "] ===");
+
+        // Iteração manual usando Node público
+        LinkedList<Pixel>.Node current = collection.getPixels().getHead();
+
+        while (current != null) {
+            Pixel p = current.getValue();
+            if (p.getId() >= idMin && p.getId() <= idMax) {
+                menu.showPixel(p);
+            }
+            current = current.getNext();
+        }
     }
 
     private Rarity criarRaridade(String text) {
-        int nivel;
-        switch (text) { // Usar RarityTable para mapear texto para nível
-            case "COMUM":
-                nivel = 1;
-                break;
-            case "INCOMUM":
-                nivel = 2;
-                break;
-            case "RARO":
-                nivel = 3;
-                break;
-            case "EPICO":
-                nivel = 4;
-                break;
-            case "LENDARIO":
-                nivel = 5;
-                break;
-            default:
-                throw new IllegalArgumentException("Desconhecida");
+        Rarity raridade = RarityTable.getRarityByDescription(text.toUpperCase());
+        if (raridade != null) {
+            if (raridade.getLevel() != 99)
+                return raridade; 
+            throw new IllegalArgumentException("Você realmente achou que poderia criar um Pixel Traue?");  
         }
-        // Cria o objeto usando o construtor
-        return new Rarity(nivel, text);
+        throw new IllegalArgumentException("Raridade inválida.");    
     }
 
     // --- MÉTODOS AUXILIARES ---
